@@ -1,42 +1,64 @@
-body {
-
-    background-color: #1a0f2e;
-    color: #FFFFFF;
-    font-family: 'VT323', monospace;
-    text-align:center;
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    h1 {
-    color: #00e5e5;
-    font-size: 36px;
-    margin: 0 0 20px 0;
-    text-shadow: 0.5px 0.5px #f7c2ed;
-    }
-
-    .dialog {
-    background-color: #2225d8;
-    border: 3px solid white;
-    max-width: 560px;
-    padding: 20px 30px;
-    margin: 20px;
-    }
-
-    button {
-    font-family: inherit;
-    font-size: 32px;
-    color: #c9ff00;
-    text-shadow: 0.8px 0.8px #ffffff;
-    background: none;
-    border: none;
-    margin: 0 40px;
-    cursor: var(--pointer, pointer);
-    }
-
-}
 html {
   cursor: var(--cursor, auto);
+}
+
+body {
+  background-color: #1a0f2e;
+  color: #FFFFFF;
+  font-family: 'VT323', monospace;
+  text-align: center;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  color: #00e5e5;
+  font-size: 36px;
+  margin: 0 0 20px 0;
+  text-shadow: 0.5px 0.5px #f7c2ed;
+}
+
+.dialog {
+  background-color: #2225d8;
+  border: 3px solid white;
+  max-width: 560px;
+  padding: 20px 30px;
+  margin: 20px;
+}
+
+button {
+  font-family: inherit;
+  font-size: 32px;
+  color: #c9ff00;
+  text-shadow: 0.8px 0.8px #ffffff;
+  background: none;
+  border: none;
+  margin: 0 40px;
+  cursor: var(--pointer, pointer);
+  position: relative;
+}
+
+button::before {
+  content: "▶";
+  font-size: 18px;
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 8px;
+  visibility: hidden;
+}
+
+button:hover::before {
+  visibility: visible;
+  animation: blink 1s steps(2) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
