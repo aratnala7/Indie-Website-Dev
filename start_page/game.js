@@ -61,8 +61,9 @@ function hit(a, b) {
          a.y + a.size > b.y;
 }
 
-function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+// CHANGED: update() = all the moving, spawning and scoring (one game tick)
+function update() {
+  bob = bob + 1; // moved here from the drawing part, so the wobble speed is the same on every screen
 
   if (started && !gameOver) {
     // move: arrows or W/S
@@ -118,9 +119,13 @@ function loop() {
 
     score = score + 1;
   }
+}
+
+// NEW: draw() = only painting, no moving
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // draw the UFO with a hover wobble (only the picture moves, not the hitbox)
-  bob = bob + 1;
   const wobble = Math.sin(bob * 0.08) * 3;
   ctx.drawImage(ufoImg, ufo.x, ufo.y + wobble, ufo.size, ufo.size);
 
@@ -148,8 +153,28 @@ function loop() {
     ctx.fillText("game over! space to try again", canvas.width / 2, 110);
   }
   ctx.textAlign = "left";
+}
 
+// NEW: the game clock. the screen can flip pages as fast as it likes,
+// but the game only takes 60 steps per second, on every screen.
+const STEP = 1000 / 60; // one game tick = 1/60 of a second (in milliseconds)
+let last = performance.now();
+let saved = 0; // time that has built up but hasn't been used for ticks yet
+
+function loop(now) {
+  saved = saved + (now - last);
+  last = now;
+  if (saved > 250) {
+    saved = 250; // if the tab was hidden for a while, don't fast forward
+  }
+
+  while (saved >= STEP) {
+    update();
+    saved = saved - STEP;
+  }
+
+  draw();
   requestAnimationFrame(loop);
 }
 
-loop();
+requestAnimationFrame(loop);
